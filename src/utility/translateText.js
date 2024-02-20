@@ -3,7 +3,7 @@ import axios from "axios";
 export const translateText = async (text) => {
   try {
     const response = await axios.post(
-      `${process.env.BASE_URL}?key=${process.env.API_KEY}`,
+      `${process.env.EXPO_PUBLIC_BASE_URL}?key=${process.env.EXPO_PUBLIC_API_KEY}`,
       {
         q: text,
         target: "en",
