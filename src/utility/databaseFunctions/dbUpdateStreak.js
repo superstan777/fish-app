@@ -9,7 +9,7 @@ export const dbUpdateStreak = (
     tx.executeSql(
       "UPDATE streak SET number = ?, lastUpdateDate = ? WHERE id = 1 ",
       [streakNumber, formatedLastUpdateDate],
-      (_, _) => {
+      (_, __) => {
         console.log(
           `New streak object: {number: ${streakNumber}, lastUpdateDate: ${formatedLastUpdateDate}}`
         );

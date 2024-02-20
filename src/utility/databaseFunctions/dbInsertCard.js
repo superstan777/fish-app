@@ -10,10 +10,10 @@ export const dbInserCard = (database, cardObject) => {
         cardObject.lastPracticeDate,
         cardObject.nextPracticeDate,
       ],
-      (_, _) => {
+      (_, __) => {
         console.log(`${cardObject.polish} word has been added to database`);
       },
-      (_, _) => console.log(`dbInsertCard error: ${error}`)
+      (_, __) => console.log(`dbInsertCard error: ${error}`)
     );
   });
 };

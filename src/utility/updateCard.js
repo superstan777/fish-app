@@ -1,5 +1,7 @@
 import { dbUpdateCard } from "./databaseFunctions/dbUpdateCard";
+import { formatDate } from "./formatDate";
 import { updateNextPracticeDate } from "./updateNextPracticeDate";
+import { updateLevel } from "./updateLevel";
 
 export const updateCard = async (
   database,
