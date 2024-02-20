@@ -6,6 +6,7 @@ import { translateText } from "../utility/translateText";
 import { showAlert } from "../utility/showAlert";
 import { dbInserCard } from "../utility/databaseFunctions/dbInsertCard";
 import { isStringEmpty } from "../utility/isStringEmpty";
+import { dbIsCardExisting } from "../utility/databaseFunctions/dbIsCardExisting";
 
 export const PrepareScreen = ({ cards, setCards, db }) => {
   const [textInput, setTextInput] = useState("");
@@ -13,28 +14,6 @@ export const PrepareScreen = ({ cards, setCards, db }) => {
   const cardsCreatedToday = cards.filter(
     (obj) => obj.creationDate === formatDate(new Date())
   );
-
-  const isWordInDatabase = async () => {
-    return new Promise((resolve, reject) => {
-      db.transaction((tx) => {
-        tx.executeSql(
-          `SELECT * FROM cards WHERE polish=(?)`,
-          [textInput.trim()],
-          (txObj, resultSet) => {
-            if (resultSet.rows.length > 0) {
-              showAlert("inDB");
-              setTextInput("");
-            }
-            resolve(resultSet.rows.length > 0); // return true, wyświetl komunikat
-          },
-          (txObj, error) => {
-            console.log(error);
-            reject(error);
-          }
-        );
-      });
-    });
-  };
 
   const createCardObject = async () => {
     const defaultDate = formatDate(new Date());
@@ -64,16 +43,22 @@ export const PrepareScreen = ({ cards, setCards, db }) => {
     }
 
     try {
-      const checkWord = await isWordInDatabase();
+      const isWordInDatabase = await dbIsCardExisting(db, textInput);
+
+      if (isWordInDatabase) {
+        showAlert("inDB");
+        setTextInput("");
+        return;
+      }
       const newCardObject = await createCardObject();
 
-      if (!checkWord) {
+      if (!isWordInDatabase) {
         dbInserCard(db, newCardObject);
         setCards([...cards, newCardObject]);
         setTextInput("");
       }
     } catch (error) {
-      console.error(error);
+      console.error(`onSubmitEditing error: ${error}`);
     }
   };
 
