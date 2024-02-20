@@ -5,6 +5,7 @@ import { formatDate } from "../utility/formatDate";
 import { translateText } from "../utility/translateText";
 import { showAlert } from "../utility/showAlert";
 import { dbInserCard } from "../utility/databaseFunctions/dbInsertCard";
+import { isStringEmpty } from "../utility/isStringEmpty";
 
 export const PrepareScreen = ({ cards, setCards, db }) => {
   const [textInput, setTextInput] = useState("");
@@ -12,15 +13,6 @@ export const PrepareScreen = ({ cards, setCards, db }) => {
   const cardsCreatedToday = cards.filter(
     (obj) => obj.creationDate === formatDate(new Date())
   );
-
-  const isWordEmpty = () => {
-    if (textInput.trim().length === 0) {
-      showAlert("empty");
-      setTextInput("");
-      return true;
-    }
-    return false;
-  };
 
   const isWordInDatabase = async () => {
     return new Promise((resolve, reject) => {
@@ -65,11 +57,17 @@ export const PrepareScreen = ({ cards, setCards, db }) => {
   };
 
   const onSubmitEditing = async () => {
+    if (isStringEmpty(textInput)) {
+      showAlert("empty");
+      setTextInput("");
+      return;
+    }
+
     try {
       const checkWord = await isWordInDatabase();
       const newCardObject = await createCardObject();
 
-      if (!isWordEmpty() && !checkWord) {
+      if (!checkWord) {
         dbInserCard(db, newCardObject);
         setCards([...cards, newCardObject]);
         setTextInput("");
