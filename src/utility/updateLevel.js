@@ -1,5 +1,4 @@
 export const updateLevel = (level, action) => {
-  "worklet";
   let newLevel;
   if (action === "inc") {
     newLevel = level + 1;

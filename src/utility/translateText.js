@@ -9,7 +9,8 @@ export const translateText = async (text) => {
         target: "en",
       }
     );
-    return response.data.data.translations[0].translatedText;
+    const translatedText = response.data.data.translations[0].translatedText;
+    return translatedText;
   } catch (error) {
     console.error("Error translating text:", error);
     return null;

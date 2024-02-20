@@ -1,28 +1,15 @@
-//console logs info
-export const dbUpdateCard = (dataBase, cardDataObject) => {
-  dataBase.transaction((tx) => {
+export const dbUpdateCard = (database, card) => {
+  database.transaction((tx) => {
     tx.executeSql(
       "UPDATE cards SET level = ?, lastPracticeDate = ?, nextPracticeDate = ? WHERE id = ?",
-      [
-        cardDataObject.level,
-        cardDataObject.lastPracticeDate,
-        cardDataObject.nextPracticeDate,
-        cardDataObject.id,
-      ],
-      (txObj, resultSet) => {
-        console.log(cardDataObject.id + "cardData id");
-        console.log(`Record with id ${cardDataObject.id} updated successfully`);
+      [card.level, card.lastPracticeDate, card.nextPracticeDate, card.id],
+      (_, _) => {
+        console.log(card.id + "cardData id");
+        console.log(`Record with id ${card.id} updated successfully`);
       },
-      (txObj, error) => {
+      (_, error) => {
         console.error(`dbInsertStreak error: ${error}`);
       }
     );
   });
 };
-
-// const cardDataObject = {
-//     id,
-//     level,
-//     lastPracticeDate,
-//     nextPracticeDate,
-// }

@@ -3,8 +3,8 @@
 import { formatDate } from "../formatDate";
 import { addDays } from "../addDays";
 
-export const dbInsertStreak = (dataBase) => {
-  dataBase.transaction((tx) => {
+export const dbInsertStreak = (database) => {
+  database.transaction((tx) => {
     tx.executeSql(
       "INSERT INTO streak (id, number, lastUpdateDate) values (?,?,?)",
       [1, 0, formatDate(addDays(todaysDate, -1))],

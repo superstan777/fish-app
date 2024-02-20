@@ -1,10 +1,10 @@
 import { formatDate } from "../formatDate";
 
-export const dbGetCards = async (dataBase) => {
+export const dbGetCards = async (database) => {
   const todaysDate = formatDate(new Date());
 
   return new Promise((resolve, reject) => {
-    dataBase.transaction((tx) => {
+    database.transaction((tx) => {
       tx.executeSql(
         "SELECT * FROM cards WHERE nextPracticeDate=(?) OR lastPracticeDate=(?)",
         [todaysDate, todaysDate],

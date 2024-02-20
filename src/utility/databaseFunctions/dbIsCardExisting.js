@@ -1,17 +1,17 @@
-export const dbIsCardExisting = async (dataBase, string) => {
+export const dbIsCardExisting = async (database, string) => {
   return new Promise((resolve, reject) => {
-    dataBase.transaction((tx) => {
+    database.transaction((tx) => {
       tx.executeSql(
         `SELECT * FROM cards WHERE polish=(?)`,
         [string.trim()],
-        (txObj, resultSet) => {
+        (_, resultSet) => {
           if (resultSet.rows.length > 0) {
             resolve(true);
           } else {
             resolve(false);
           }
         },
-        (txObj, error) => {
+        (_, error) => {
           console.log(error + " dbIsExisting error");
           reject(error);
         }

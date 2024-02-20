@@ -1,5 +1,5 @@
-export const dbInserCard = (dataBase, cardObject) => {
-  dataBase.transaction((tx) => {
+export const dbInserCard = (database, cardObject) => {
+  database.transaction((tx) => {
     tx.executeSql(
       "INSERT INTO cards (polish, english, level, creationDate, lastPracticeDate, nextPracticeDate) values (?,?,?,?,?,?)",
       [
@@ -10,10 +10,10 @@ export const dbInserCard = (dataBase, cardObject) => {
         cardObject.lastPracticeDate,
         cardObject.nextPracticeDate,
       ],
-      (txObj, resultSet) => {
-        console.log(`${cardObject.polish} word has been added`);
+      (_, _) => {
+        console.log(`${cardObject.polish} word has been added to database`);
       },
-      (txObj, error) => console.log(`dbInsertCard error: ${error}`)
+      (_, _) => console.log(`dbInsertCard error: ${error}`)
     );
   });
 };

@@ -1,15 +1,15 @@
 // OK
 // updates data base and console logs new streak object
 export const dbUpdateStreak = (
-  dataBase,
+  database,
   streakNumber,
   formatedLastUpdateDate
 ) => {
-  dataBase.transaction((tx) => {
+  database.transaction((tx) => {
     tx.executeSql(
       "UPDATE streak SET number = ?, lastUpdateDate = ? WHERE id = 1 ",
       [streakNumber, formatedLastUpdateDate],
-      () => {
+      (_, _) => {
         console.log(
           `New streak object: {number: ${streakNumber}, lastUpdateDate: ${formatedLastUpdateDate}}`
         );

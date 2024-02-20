@@ -9,10 +9,7 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import { snapPoint } from "react-native-redash";
-import { updateLevel } from "../utility/updateLevel";
-import { updateNextPracticeDate } from "../utility/updateNextPracticeDate";
-import { formatDate } from "../utility/formatDate";
-import { dbUpdateCard } from "../utility/databaseFunctions/dbUpdateCard";
+import { updateCard } from "../utility/updateCard";
 
 const { width: wWidth, height } = Dimensions.get("window");
 
@@ -25,54 +22,12 @@ export const Card = ({ cardData, cards, setCards, db }) => {
   const scale = useSharedValue(1);
   const rotateZ = useSharedValue(0);
 
-  const updateCardsDec = async () => {
-    const newLevel = updateLevel(cardData.level, "dec");
-    const newNextPracticeDate = updateNextPracticeDate(newLevel);
-    const updatedCard = {
-      ...cardData,
-      level: newLevel,
-      nextPracticeDate: newNextPracticeDate,
-      lastPracticeDate: formatDate(new Date()),
-    };
-    try {
-      dbUpdateCard(db, updatedCard);
-
-      // sprawdzić co się stanie jeśli będą złe dane
-      const updatedCards = cards.map((obj) => {
-        if (obj.polish === cardData.polish) {
-          return updatedCard;
-        }
-        return obj;
-      });
-      setCards(updatedCards);
-    } catch (error) {
-      console.log(error);
-    }
+  const updateCardsDec = () => {
+    updateCard(db, cardData, cards, setCards, "dec");
   };
 
-  const updateCardsInc = async () => {
-    //param
-    const newLevel = updateLevel(cardData.level, "inc"); //inc
-    const newNextPracticeDate = updateNextPracticeDate(cardData.level);
-    const updatedCard = {
-      ...cardData,
-      level: newLevel,
-      nextPracticeDate: newNextPracticeDate,
-      lastPracticeDate: formatDate(new Date()),
-    };
-    try {
-      dbUpdateCard(db, updatedCard);
-
-      const updatedCards = cards.map((obj) => {
-        if (obj.polish === cardData.polish) {
-          return updatedCard;
-        }
-        return obj;
-      });
-      setCards(updatedCards);
-    } catch (error) {
-      console.log(error);
-    }
+  const updateCardsInc = () => {
+    updateCard(db, cardData, cards, setCards, "inc");
   };
 
   const pan = Gesture.Pan()
@@ -100,7 +55,6 @@ export const Card = ({ cardData, cards, setCards, db }) => {
           runOnJS(updateCardsInc)();
         }
       });
-      console.log(cards + "cards");
     });
 
   const threeFingersTap = Gesture.Tap()

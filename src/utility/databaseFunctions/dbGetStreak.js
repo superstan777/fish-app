@@ -1,7 +1,5 @@
-// RETURN TO BE CHECKED
-
-export const dbGetStreak = (dataBase) => {
-  dataBase.transaction((tx) => {
+export const dbGetStreak = (database) => {
+  database.transaction((tx) => {
     tx.executeSql(
       "SELECT * FROM streakData WHERE id=(?)",
       [1],
@@ -14,5 +12,3 @@ export const dbGetStreak = (dataBase) => {
     );
   });
 };
-
-// RETURNING OBJECT OR UNDEFINED
