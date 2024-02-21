@@ -15,7 +15,7 @@ const { width: wWidth, height } = Dimensions.get("window");
 
 const SNAP_POINTS = [-wWidth, 0, wWidth];
 
-export const Card = ({ cardData, cards, setCards, db }) => {
+export const Card = ({ cardData, setWasDatabaseUpdated, db }) => {
   const offset = useSharedValue({ x: 0, y: 0 });
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -23,11 +23,11 @@ export const Card = ({ cardData, cards, setCards, db }) => {
   const rotateZ = useSharedValue(0);
 
   const updateCardsDec = () => {
-    updateCard(db, cardData, cards, setCards, "dec");
+    updateCard(db, cardData, setWasDatabaseUpdated, "dec");
   };
 
   const updateCardsInc = () => {
-    updateCard(db, cardData, cards, setCards, "inc");
+    updateCard(db, cardData, setWasDatabaseUpdated, "inc");
   };
 
   const pan = Gesture.Pan()

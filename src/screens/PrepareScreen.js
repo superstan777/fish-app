@@ -3,12 +3,12 @@ import { useState } from "react";
 import { NewWordsIndicator } from "../components/NewWordsIndicator";
 import { formatDate } from "../utility/formatDate";
 import { showAlert } from "../utility/showAlert";
-import { dbInserCard } from "../utility/databaseFunctions/dbInsertCard";
+import { dbInsertCard } from "../utility/databaseFunctions/dbInsertCard";
 import { isStringEmpty } from "../utility/isStringEmpty";
 import { dbIsCardExisting } from "../utility/databaseFunctions/dbIsCardExisting";
 import { createCardObject } from "../utility/createCardObject";
 
-export const PrepareScreen = ({ cards, setCards, db }) => {
+export const PrepareScreen = ({ cards, setWasDatabaseUpdated, db }) => {
   const [textInput, setTextInput] = useState("");
 
   const cardsCreatedToday = cards.filter(
@@ -33,8 +33,8 @@ export const PrepareScreen = ({ cards, setCards, db }) => {
       const newCardObject = await createCardObject(textInput);
 
       if (!isWordInDatabase) {
-        dbInserCard(db, newCardObject);
-        setCards([...cards, newCardObject]);
+        dbInsertCard(db, newCardObject);
+        setWasDatabaseUpdated(true);
         setTextInput("");
       }
     } catch (error) {
@@ -45,7 +45,6 @@ export const PrepareScreen = ({ cards, setCards, db }) => {
   return (
     <View style={styles.container}>
       <NewWordsIndicator newWordsCounter={cardsCreatedToday.length} />
-
       <View style={styles.card}>
         <Text style={styles.cardText}>dodaj słowo</Text>
         <TextInput

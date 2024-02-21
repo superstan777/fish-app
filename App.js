@@ -1,9 +1,9 @@
+import * as SQLite from "expo-sqlite";
 import { useState, useEffect, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { PrepareScreen } from "./src/screens/PrepareScreen";
 import { PracticeScreen } from "./src/screens/PracticeScreen";
-import * as SQLite from "expo-sqlite";
 import { MenuBar } from "./src/components/MenuBar";
 import { dbCreateTables } from "./src/utility/databaseFunctions/dbCreateTables";
 import { dbGetCards } from "./src/utility/databaseFunctions/dbGetCards";
@@ -19,11 +19,11 @@ export default function App() {
     number: 0,
     lastUpdateDate: null,
   });
+  const [wasDatabaseUpdated, setWasDatabaseUpdated] = useState(false);
   const isMounted = useRef(false);
 
   const setCardsHandler = async () => {
     const result = await dbGetCards(db);
-    console.log(result);
     setCards(result);
   };
 
@@ -37,6 +37,7 @@ export default function App() {
     if (!isMounted.current) {
       dbCreateTables(db); // OK
       setCardsHandler();
+
       // setStreakHandler();
 
       isMounted.current = true;
@@ -44,6 +45,13 @@ export default function App() {
       updateStreak(cards, streak, setStreak, db);
     }
   }, [cards]);
+
+  useEffect(() => {
+    if (wasDatabaseUpdated) {
+      setCardsHandler();
+      setWasDatabaseUpdated(false);
+    }
+  }, [wasDatabaseUpdated]);
 
   const changeScreenHandler = () => {
     setScreen((prevScreen) =>
@@ -54,9 +62,21 @@ export default function App() {
   const renderSwitch = (param) => {
     switch (param) {
       case "prepare":
-        return <PrepareScreen cards={cards} setCards={setCards} db={db} />;
+        return (
+          <PrepareScreen
+            cards={cards}
+            setWasDatabaseUpdated={setWasDatabaseUpdated}
+            db={db}
+          />
+        );
       case "practice":
-        return <PracticeScreen cards={cards} setCards={setCards} db={db} />;
+        return (
+          <PracticeScreen
+            cards={cards}
+            setWasDatabaseUpdated={setWasDatabaseUpdated}
+            db={db}
+          />
+        );
       default:
         return "default";
     }

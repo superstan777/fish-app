@@ -1,4 +1,4 @@
-export const dbInserCard = (database, cardObject) => {
+export const dbInsertCard = (database, cardObject) => {
   database.transaction((tx) => {
     tx.executeSql(
       "INSERT INTO cards (polish, english, level, creationDate, lastPracticeDate, nextPracticeDate) values (?,?,?,?,?,?)",

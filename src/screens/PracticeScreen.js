@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useState, useEffect } from "react";
 import { TextToSpeechButton } from "../components/TextToSpeechButton";
 
-export const PracticeScreen = ({ cards, setCards, db }) => {
+export const PracticeScreen = ({ cards, setWasDatabaseUpdated, db }) => {
   const [currentText, setCurrentText] = useState("current text");
 
   const cardsDoneToday = cards.filter(
@@ -47,8 +47,7 @@ export const PracticeScreen = ({ cards, setCards, db }) => {
           key={index}
           index={index}
           cardData={card}
-          cards={cards}
-          setCards={setCards}
+          setWasDatabaseUpdated={setWasDatabaseUpdated}
           db={db}
         />
       ));

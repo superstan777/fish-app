@@ -10,7 +10,7 @@ export const dbGetCards = async (database) => {
         [todaysDate, todaysDate],
         (_, resultSet) => {
           const result = resultSet.rows._array;
-          console.log(result);
+          console.log(result + "dbGetCards");
           resolve(result);
         },
         (_, error) => {

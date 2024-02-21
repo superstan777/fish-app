@@ -6,8 +6,7 @@ import { updateLevel } from "./updateLevel";
 export const updateCard = async (
   database,
   cardData,
-  cards,
-  setCards,
+  setWasDatabaseUpdated,
   param
 ) => {
   let newLevel;
@@ -26,14 +25,7 @@ export const updateCard = async (
   };
   try {
     dbUpdateCard(database, updatedCard);
-
-    const updatedCards = cards.map((obj) => {
-      if (obj.polish === cardData.polish) {
-        return updatedCard;
-      }
-      return obj;
-    });
-    setCards(updatedCards);
+    setWasDatabaseUpdated(true);
   } catch (error) {
     console.log(error);
   }
