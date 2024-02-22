@@ -1,8 +1,13 @@
 export const formatDate = (dateObj) => {
-  "worklet";
-  const day = dateObj.getDate();
-  const month = dateObj.getMonth() + 1;
+  let day = dateObj.getDate();
+  let month = dateObj.getMonth() + 1;
   const year = dateObj.getFullYear();
+  if (day < 10) {
+    day = "0" + day;
+  }
+  if (month < 10) {
+    month = "0" + month;
+  }
 
   return `${year}-${month}-${day}`;
 };
