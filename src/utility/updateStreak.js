@@ -2,7 +2,7 @@ import { formatDate } from "./formatDate";
 import { dbUpdateStreak } from "./databaseFunctions/dbUpdateStreak";
 import { addDays } from "./addDays";
 
-export const updateStreak = (cards, streak, setStreak, db) => {
+export const updateStreak = (cards, streak, db) => {
   const todaysDate = new Date();
 
   if (streak.lastUpdateDate === formatDate(todaysDate)) {
@@ -13,10 +13,6 @@ export const updateStreak = (cards, streak, setStreak, db) => {
     streak.lastUpdateDate === formatDate(addDays(todaysDate, -1)) &&
     cards.map((obj) => obj.lastPracticeDate).includes(formatDate(todaysDate))
   ) {
-    setStreak({
-      number: streak.number + 1,
-      lastUpdateDate: formatDate(todaysDate),
-    });
     dbUpdateStreak(db, streak.number + 1, formatDate(todaysDate));
     return;
   }
@@ -24,7 +20,6 @@ export const updateStreak = (cards, streak, setStreak, db) => {
   if (
     cards.map((obj) => obj.lastPracticeDate).includes(formatDate(todaysDate))
   ) {
-    setStreak({ number: 1, lastUpdateDate: formatDate(todaysDate) });
     dbUpdateStreak(db, 1, formatDate(todaysDate));
     return;
   }

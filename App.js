@@ -10,15 +10,18 @@ import { dbGetCards } from "./src/utility/databaseFunctions/dbGetCards";
 import { updateStreak } from "./src/utility/updateStreak";
 import { dbUpdateStreak } from "./src/utility/databaseFunctions/dbUpdateStreak";
 import { dbGetStreak } from "./src/utility/databaseFunctions/dbGetStreak";
+import { dbGetLostCardsIds } from "./src/utility/databaseFunctions/dbGetLostCardsIds";
+import { dbInsertCard } from "./src/utility/databaseFunctions/dbInsertCard";
+import { dbDeleteLostCards } from "./src/utility/databaseFunctions/dbDeleteLostCards";
+import { formatDate } from "./src/utility/formatDate";
+import { addDays } from "./src/utility/addDays";
+import { dbInsertStreak } from "./src/utility/databaseFunctions/dbInsertStreak";
 
 export default function App() {
-  const db = SQLite.openDatabase("cards213789119111121.db");
+  const db = SQLite.openDatabase("cards213789111911112111.db");
   const [cards, setCards] = useState([]);
   const [screen, setScreen] = useState("prepare");
-  const [streak, setStreak] = useState({
-    number: 0,
-    lastUpdateDate: null,
-  });
+  const [streak, setStreak] = useState({});
   const [wasDatabaseUpdated, setWasDatabaseUpdated] = useState(false);
   const isMounted = useRef(false);
 
@@ -27,22 +30,30 @@ export default function App() {
     setCards(result);
   };
 
-  // const setStreakHandler = async () => {
-  //   const result = await dbGetStreak(db);
-  //   console.log(result);
-  //   setStreak(result);
-  // };
+  const deleteLostCards = async () => {
+    const arrayOfIds = await dbGetLostCardsIds(db);
+    console.log(arrayOfIds.toString());
+    dbDeleteLostCards(db, arrayOfIds);
+  };
+  const setStreakHandler = async () => {
+    const result = await dbGetStreak(db);
+    if (result === undefined) {
+      dbInsertStreak(db);
+      const result = await dbGetStreak(db);
+      setStreak(result);
+    } else setStreak(result);
+  };
 
   useEffect(() => {
     if (!isMounted.current) {
       dbCreateTables(db); // OK
       setCardsHandler();
-
-      // setStreakHandler();
+      deleteLostCards();
+      setStreakHandler();
 
       isMounted.current = true;
     } else {
-      updateStreak(cards, streak, setStreak, db);
+      // updateStreak(cards, streak, setStreak, db);
     }
   }, [cards]);
 
@@ -58,6 +69,21 @@ export default function App() {
       prevScreen === "prepare" ? "practice" : "prepare"
     );
   };
+
+  // useEffect(() => {
+  //   if (isMounted.current) {
+  //     const cardObject = {
+  //       polish: "1234",
+  //       english: "1235r",
+  //       level: 0,
+  //       creationDate: formatDate(new Date("2024-02-20")),
+  //       lastPracticeDate: null,
+  //       nextPracticeDate: formatDate(new Date("2024-02-20")),
+  //     };
+  //     console.log(cardObject.nextPracticeDate);
+  //     dbInsertCard(db, cardObject);
+  //   }
+  // }, []);
 
   const renderSwitch = (param) => {
     switch (param) {
