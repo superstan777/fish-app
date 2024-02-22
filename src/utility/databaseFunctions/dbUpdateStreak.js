@@ -7,11 +7,8 @@ export const dbUpdateStreak = (
     tx.executeSql(
       "UPDATE streak SET number = ?, lastUpdateDate = ? WHERE id = 1 ",
       [streakNumber, formatedLastUpdateDate],
-      (_, resultSet) => {
-        console.log(resultSet);
-        console.log(
-          `New streak object: {number: ${streakNumber}, lastUpdateDate: ${formatedLastUpdateDate}}`
-        );
+      (_, __) => {
+        console.log(`Streak has been updated properly`);
       },
       (_, error) => {
         console.error("Error updating streak table:", error);

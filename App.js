@@ -8,13 +8,10 @@ import { MenuBar } from "./src/components/MenuBar";
 import { dbCreateTables } from "./src/utility/databaseFunctions/dbCreateTables";
 import { dbGetCards } from "./src/utility/databaseFunctions/dbGetCards";
 import { updateStreak } from "./src/utility/updateStreak";
-import { dbUpdateStreak } from "./src/utility/databaseFunctions/dbUpdateStreak";
 import { dbGetStreak } from "./src/utility/databaseFunctions/dbGetStreak";
 import { dbGetLostCardsIds } from "./src/utility/databaseFunctions/dbGetLostCardsIds";
 import { dbInsertCard } from "./src/utility/databaseFunctions/dbInsertCard";
 import { dbDeleteLostCards } from "./src/utility/databaseFunctions/dbDeleteLostCards";
-import { formatDate } from "./src/utility/formatDate";
-import { addDays } from "./src/utility/addDays";
 import { dbInsertStreak } from "./src/utility/databaseFunctions/dbInsertStreak";
 
 export default function App() {
@@ -53,13 +50,14 @@ export default function App() {
 
       isMounted.current = true;
     } else {
-      // updateStreak(cards, streak, setStreak, db);
+      updateStreak(cards, streak, db, setWasDatabaseUpdated);
     }
   }, [cards]);
 
   useEffect(() => {
     if (wasDatabaseUpdated) {
       setCardsHandler();
+      setStreakHandler();
       setWasDatabaseUpdated(false);
     }
   }, [wasDatabaseUpdated]);
