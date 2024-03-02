@@ -1,6 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export const NewWordsIndicator = ({ newWordsCounter }) => {
+interface Props {
+  newWordsCounter: number;
+}
+
+export const NewWordsIndicator: React.FC<Props> = ({ newWordsCounter }) => {
   return (
     <View style={styles.counter}>
       <Text style={styles.counterText}>{newWordsCounter} new today</Text>
@@ -14,7 +18,7 @@ const styles = StyleSheet.create({
   },
   counter: {
     padding: 12,
-    fontSize: "24px",
+    fontSize: 24,
     marginBottom: 6,
   },
 });

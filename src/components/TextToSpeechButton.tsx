@@ -6,19 +6,23 @@ import * as Speech from "expo-speech";
 //english word should be passed
 //both words should be passed
 
-export const TextToSpeechButton = ({ word }) => {
-  const [isSpeaking, setIsSpeaking] = useState(false);
+interface Props {
+  word: string;
+}
 
-  const onStart = () => {
+export const TextToSpeechButton: React.FC<Props> = ({ word }) => {
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+
+  const onStart = (): void => {
     setIsSpeaking(true);
     console.log("speaking");
   };
-  const onDone = () => {
+  const onDone = (): void => {
     setIsSpeaking(false);
     console.log("done");
   };
 
-  const onPressHandler = () => {
+  const onPressHandler = (): void => {
     Speech.stop();
     Speech.speak(word, {
       language: "en",
@@ -51,4 +55,3 @@ export const TextToSpeechButton = ({ word }) => {
     </Pressable>
   );
 };
-// change color when active #3061b0

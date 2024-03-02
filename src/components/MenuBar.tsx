@@ -1,12 +1,16 @@
 import { View, Text, StyleSheet } from "react-native";
 import { SwitchButton } from "./SwitchButton";
 
-export const MenuBar = ({ screenButtonHandler, streak }) => {
+interface Props {
+  screenButtonHandler: () => void;
+  streak: number;
+}
+
+export const MenuBar: React.FC<Props> = ({ screenButtonHandler, streak }) => {
   return (
     <View style={styles.container}>
       <View style={styles.containerItem}>
         <Text style={styles.text}>Streak: {streak}</Text>
-        {/* <Text style={styles.text}>English</Text> */}
       </View>
       <View style={styles.containerItem}>
         <SwitchButton buttonHandler={screenButtonHandler} />

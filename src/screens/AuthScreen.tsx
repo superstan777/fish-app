@@ -3,23 +3,25 @@ import { useState } from "react";
 import { LoginScreen } from "./LoginScreen";
 import { SignUpScreen } from "./SignUpScreen";
 
-export const AuthScreen = () => {
-  const [authScreen, setAuthScreen] = useState("login");
+type AuthScreenType = "login" | "signup";
 
-  const changeAuthScreen = () => {
+export const AuthScreen: React.FC = () => {
+  const [authScreen, setAuthScreen] = useState<AuthScreenType>("login");
+
+  const changeAuthScreen = (): void => {
     setAuthScreen((prevScreen) =>
       prevScreen === "login" ? "signup" : "login"
     );
   };
 
-  const renderAuthScreen = (param) => {
+  const renderAuthScreen = (param: AuthScreenType): JSX.Element => {
     switch (param) {
       case "login":
         return <LoginScreen changeAuthScreen={changeAuthScreen} />;
       case "signup":
         return <SignUpScreen changeAuthScreen={changeAuthScreen} />;
       default:
-        return "login";
+        throw new Error("Invalid auth screen type");
     }
   };
 
@@ -30,7 +32,6 @@ const styles = StyleSheet.create({
   loginScreen: {
     flex: 1,
     marginBottom: 16,
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,

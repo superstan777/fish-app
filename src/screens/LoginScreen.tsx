@@ -6,7 +6,11 @@ import { LoginContext } from "../context/LoginContext";
 import { DUMMYDB } from "../DUMMMYDB";
 import { showAlert } from "../utility/showAlert";
 
-export const LoginScreen = ({ changeAuthScreen }) => {
+interface Props {
+  changeAuthScreen: () => void;
+}
+
+export const LoginScreen: React.FC<Props> = ({ changeAuthScreen }) => {
   const { login } = useContext(LoginContext);
 
   const [username, setUsername] = useState();

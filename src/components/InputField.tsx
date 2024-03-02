@@ -1,7 +1,11 @@
 import { TextInput, StyleSheet } from "react-native";
 
-export const InputField = ({ text, setText, placeholder }) => {
-  //type to be added
+interface Props {
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  placeholder: string;
+}
+export const InputField: React.FC<Props> = ({ text, setText, placeholder }) => {
   return (
     <TextInput
       style={styles.input}
