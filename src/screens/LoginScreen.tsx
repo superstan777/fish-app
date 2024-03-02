@@ -42,9 +42,9 @@ export const LoginScreen = ({ changeAuthScreen }) => {
         placeholder="password"
       />
 
-      <Button buttonText="login" handler={onSubmit} />
+      <Button buttonText="login" handler={onSubmit} type="default" />
       <Text>or</Text>
-      <Button buttonText="sign up" handler={changeAuthScreen} />
+      <Button buttonText="sign up" handler={changeAuthScreen} type="ghost" />
     </Pressable>
   );
 };

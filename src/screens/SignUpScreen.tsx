@@ -64,9 +64,9 @@ export const SignUpScreen = ({ changeAuthScreen }) => {
         setText={setRepassword}
         placeholder="re-password"
       />
-      <Button buttonText="sign up" handler={onSubmit} />
+      <Button buttonText="sign up" handler={onSubmit} type="default" />
       <Text>or</Text>
-      <Button buttonText="login" handler={changeAuthScreen} />
+      <Button buttonText="login" handler={changeAuthScreen} type="ghost" />
     </Pressable>
   );
 };
