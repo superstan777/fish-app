@@ -1,5 +1,5 @@
-export const updateLevel = (level, action) => {
-  let newLevel;
+export const updateLevel = (level: number, action: "inc" | "dec"): number => {
+  let newLevel: number;
   if (action === "inc") {
     newLevel = level + 1;
   }
