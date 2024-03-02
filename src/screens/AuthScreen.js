@@ -1,6 +1,5 @@
-import { View, StyleSheet, Text } from "react-native";
-import { Button } from "../components/Button";
-import { useContext, useState } from "react";
+import { View, StyleSheet } from "react-native";
+import { useState } from "react";
 import { LoginScreen } from "./LoginScreen";
 import { SignUpScreen } from "./SignUpScreen";
 
@@ -35,5 +34,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
+    width: "100%",
   },
 });

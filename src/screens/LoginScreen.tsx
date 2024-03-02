@@ -1,8 +1,10 @@
-import { View, StyleSheet, Text } from "react-native";
+import { Pressable, Keyboard, StyleSheet, Text } from "react-native";
 import { InputField } from "../components/InputField";
 import { useState, useContext } from "react";
 import { Button } from "../components/Button";
 import { LoginContext } from "../context/LoginContext";
+import { DUMMYDB } from "../DUMMMYDB";
+import { showAlert } from "../utility/showAlert";
 
 export const LoginScreen = ({ changeAuthScreen }) => {
   const { login } = useContext(LoginContext);
@@ -10,10 +12,25 @@ export const LoginScreen = ({ changeAuthScreen }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  // subbmit login logic to be done
+  const isPasswordCorrect = (username: string, password: string): boolean => {
+    const userIndex: number = DUMMYDB.findIndex(
+      (obj) => obj.username === username
+    );
+    if (userIndex !== -1 && DUMMYDB[userIndex].password === password) {
+      return true;
+    } else return false;
+  };
+
+  const onSubmit = (): void => {
+    if (isPasswordCorrect(username, password)) {
+      login();
+    } else {
+      showAlert("noAccount");
+    }
+  };
 
   return (
-    <View style={styles.screen}>
+    <Pressable style={styles.screen} onPress={() => Keyboard.dismiss()}>
       <InputField
         text={username}
         setText={setUsername}
@@ -25,10 +42,10 @@ export const LoginScreen = ({ changeAuthScreen }) => {
         placeholder="password"
       />
 
-      <Button buttonText="login" handler={() => login()} />
+      <Button buttonText="login" handler={onSubmit} />
       <Text>or</Text>
       <Button buttonText="sign up" handler={changeAuthScreen} />
-    </View>
+    </Pressable>
   );
 };
 
@@ -40,5 +57,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
+    width: "100%",
   },
 });
