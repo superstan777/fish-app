@@ -12,6 +12,7 @@ export const Button = ({ buttonText, handler }) => {
 
 const styles = StyleSheet.create({
   button: {
+    marginTop: 16,
     marginBottom: 16,
     width: 80,
     height: 50,

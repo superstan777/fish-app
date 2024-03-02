@@ -8,5 +8,7 @@ export const showAlert = (type) => {
     Alert.alert("Input is empty", "type a word", [buttonObject]);
   } else if (type === "inDB") {
     Alert.alert("Word already in database", "add other word", [buttonObject]);
+  } else if (type === "noAccount") {
+    Alert.alert("No user", "check username or password", [buttonObject]);
   }
 };
