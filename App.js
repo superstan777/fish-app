@@ -9,11 +9,10 @@ import { dbCreateTables } from "./src/utility/databaseFunctions/dbCreateTables";
 import { dbGetCards } from "./src/utility/databaseFunctions/dbGetCards";
 import { updateStreak } from "./src/utility/updateStreak";
 import { dbGetStreak } from "./src/utility/databaseFunctions/dbGetStreak";
-import { dbGetLostCardsIds } from "./src/utility/databaseFunctions/dbGetLostCardsIds";
-import { dbInsertCard } from "./src/utility/databaseFunctions/dbInsertCard";
+// import { dbGetLostCardsIds } from "./src/utility/databaseFunctions/dbGetLostCardsIds";
+// import { dbInsertCard } from "./src/utility/databaseFunctions/dbInsertCard";
 // import { dbDeleteLostCards } from "./src/utility/databaseFunctions/dbDeleteLostCards";
 import { LoginContext } from "./src/context/LoginContext";
-
 import { dbInsertStreak } from "./src/utility/databaseFunctions/dbInsertStreak";
 import { AuthScreen } from "./src/screens/AuthScreen";
 
@@ -24,6 +23,7 @@ export default function App() {
   const [streak, setStreak] = useState({});
   const [wasDatabaseUpdated, setWasDatabaseUpdated] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isMounted = useRef(false);
 
   const login = () => {
     setIsLoggedIn(true);
@@ -32,8 +32,6 @@ export default function App() {
   const logout = () => {
     setIsLoggedIn(false);
   };
-
-  const isMounted = useRef(false);
 
   const setCardsHandler = async () => {
     const result = await dbGetCards(db);

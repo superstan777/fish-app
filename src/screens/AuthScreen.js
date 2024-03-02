@@ -1,31 +1,30 @@
 import { View, StyleSheet, Text } from "react-native";
 import { Button } from "../components/Button";
 import { useContext, useState } from "react";
-import { LoginContext } from "../context/LoginContext";
-import { InputField } from "../components/InputField";
+import { LoginScreen } from "./LoginScreen";
+import { SignUpScreen } from "./SignUpScreen";
 
 export const AuthScreen = () => {
-  const { login } = useContext(LoginContext);
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [authScreen, setAuthScreen] = useState("login");
 
-  return (
-    <View style={styles.loginScreen}>
-      <InputField
-        text={username}
-        setText={setUsername}
-        placeholder="username"
-      />
-      <InputField
-        text={password}
-        setText={setPassword}
-        placeholder="password"
-      />
-      <Button buttonText="login" handler={() => login()} />
-      {/* <Text>or</Text>
-      <Button buttonText="sign up" handler={() => login()} /> */}
-    </View>
-  );
+  const changeAuthScreen = () => {
+    setAuthScreen((prevScreen) =>
+      prevScreen === "login" ? "signup" : "login"
+    );
+  };
+
+  const renderAuthScreen = (param) => {
+    switch (param) {
+      case "login":
+        return <LoginScreen changeAuthScreen={changeAuthScreen} />;
+      case "signup":
+        return <SignUpScreen changeAuthScreen={changeAuthScreen} />;
+      default:
+        return "login";
+    }
+  };
+
+  return <View style={styles.loginScreen}>{renderAuthScreen(authScreen)}</View>;
 };
 
 const styles = StyleSheet.create({
