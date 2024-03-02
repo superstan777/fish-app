@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView, View } from "react-native";
 import { PrepareScreen } from "./src/screens/PrepareScreen";
 import { PracticeScreen } from "./src/screens/PracticeScreen";
 import { MenuBar } from "./src/components/MenuBar";
@@ -11,8 +11,11 @@ import { updateStreak } from "./src/utility/updateStreak";
 import { dbGetStreak } from "./src/utility/databaseFunctions/dbGetStreak";
 import { dbGetLostCardsIds } from "./src/utility/databaseFunctions/dbGetLostCardsIds";
 import { dbInsertCard } from "./src/utility/databaseFunctions/dbInsertCard";
-import { dbDeleteLostCards } from "./src/utility/databaseFunctions/dbDeleteLostCards";
+// import { dbDeleteLostCards } from "./src/utility/databaseFunctions/dbDeleteLostCards";
+import { LoginContext } from "./src/context/LoginContext";
+
 import { dbInsertStreak } from "./src/utility/databaseFunctions/dbInsertStreak";
+import { AuthScreen } from "./src/screens/AuthScreen";
 
 export default function App() {
   const db = SQLite.openDatabase("cards213789111911112111.db");
@@ -20,6 +23,16 @@ export default function App() {
   const [screen, setScreen] = useState("prepare");
   const [streak, setStreak] = useState({});
   const [wasDatabaseUpdated, setWasDatabaseUpdated] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const login = () => {
+    setIsLoggedIn(true);
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+  };
+
   const isMounted = useRef(false);
 
   const setCardsHandler = async () => {
@@ -27,11 +40,11 @@ export default function App() {
     setCards(result);
   };
 
-  const deleteLostCards = async () => {
-    const arrayOfIds = await dbGetLostCardsIds(db);
-    console.log(arrayOfIds.toString());
-    dbDeleteLostCards(db, arrayOfIds);
-  };
+  // const deleteLostCards = async () => {
+  //   const arrayOfIds = await dbGetLostCardsIds(db);
+  //   console.log(arrayOfIds.toString());
+  //   dbDeleteLostCards(db, arrayOfIds);
+  // };
   const setStreakHandler = async () => {
     const result = await dbGetStreak(db);
     if (result === undefined) {
@@ -45,7 +58,7 @@ export default function App() {
     if (!isMounted.current) {
       dbCreateTables(db); // OK
       setCardsHandler();
-      deleteLostCards();
+      // deleteLostCards();
       setStreakHandler();
 
       isMounted.current = true;
@@ -107,14 +120,22 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <MenuBar
-        screenButtonHandler={changeScreenHandler}
-        streak={streak.number}
-      />
-      {renderSwitch(screen)}
-      <StatusBar style="auto" />
-    </SafeAreaView>
+    <LoginContext.Provider value={{ isLoggedIn, login, logout }}>
+      <SafeAreaView style={styles.container}>
+        {!isLoggedIn ? (
+          <AuthScreen />
+        ) : (
+          <View>
+            <MenuBar
+              screenButtonHandler={changeScreenHandler}
+              streak={streak.number}
+            />
+            {renderSwitch(screen)}
+          </View>
+        )}
+        <StatusBar style="auto" />
+      </SafeAreaView>
+    </LoginContext.Provider>
   );
 }
 
