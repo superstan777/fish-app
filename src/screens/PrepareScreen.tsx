@@ -6,16 +6,30 @@ import { showAlert } from "../utility/showAlert";
 import { dbInsertCard } from "../utility/databaseFunctions/dbInsertCard";
 import { isStringEmpty } from "../utility/isStringEmpty";
 import { dbIsCardExisting } from "../utility/databaseFunctions/dbIsCardExisting";
-import { createCardObject } from "../utility/createCardObject";
+import {
+  CardObjectInterface,
+  createCardObject,
+} from "../utility/createCardObject";
+import { CardInterface } from "../Interfaces";
 
-export const PrepareScreen = ({ cards, setWasDatabaseUpdated, db }) => {
-  const [textInput, setTextInput] = useState("");
+interface Props {
+  database: any;
+  cards: CardInterface[];
+  setWasDatabaseUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const cardsCreatedToday = cards.filter(
+export const PrepareScreen: React.FC<Props> = ({
+  database,
+  cards,
+  setWasDatabaseUpdated,
+}) => {
+  const [textInput, setTextInput] = useState<string>("");
+
+  const cardsCreatedToday: CardInterface[] = cards.filter(
     (obj) => obj.creationDate === formatDate(new Date())
   );
 
-  const onSubmitEditing = async () => {
+  const onSubmitEditing = async (): Promise<void> => {
     if (isStringEmpty(textInput)) {
       showAlert("empty");
       setTextInput("");
@@ -23,17 +37,19 @@ export const PrepareScreen = ({ cards, setWasDatabaseUpdated, db }) => {
     }
 
     try {
-      const isWordInDatabase = await dbIsCardExisting(db, textInput);
+      const isWordInDatabase: any = await dbIsCardExisting(database, textInput); // proper type to be set
 
       if (isWordInDatabase) {
         showAlert("inDB");
         setTextInput("");
         return;
       }
-      const newCardObject = await createCardObject(textInput);
+      const newCardObject: CardObjectInterface = await createCardObject(
+        textInput
+      );
 
       if (!isWordInDatabase) {
-        dbInsertCard(db, newCardObject);
+        dbInsertCard(database, newCardObject);
         setWasDatabaseUpdated(true);
         setTextInput("");
       }

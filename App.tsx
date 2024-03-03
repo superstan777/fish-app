@@ -15,31 +15,29 @@ import { dbGetStreak } from "./src/utility/databaseFunctions/dbGetStreak";
 import { LoginContext } from "./src/context/LoginContext";
 import { dbInsertStreak } from "./src/utility/databaseFunctions/dbInsertStreak";
 import { AuthScreen } from "./src/screens/AuthScreen";
-
-interface Streak {
-  number: number;
-  lastUpdateDate: string;
-}
+import { CardInterface, StreakInterface } from "./src/Interfaces";
 
 export default function App() {
-  const db = SQLite.openDatabase("cards213789111911112111.db");
-  const [cards, setCards] = useState([]);
-  const [screen, setScreen] = useState("prepare");
-  const [streak, setStreak] = useState<Streak | {}>({});
-  const [wasDatabaseUpdated, setWasDatabaseUpdated] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const isMounted = useRef(false);
+  const db: SQLite.SQLiteDatabase = SQLite.openDatabase(
+    "cards213789111911112111.db"
+  );
+  const [cards, setCards] = useState<CardInterface[] | undefined>(undefined);
+  const [screen, setScreen] = useState<"prepare" | "practice">("prepare");
+  const [streak, setStreak] = useState<StreakInterface | undefined>();
+  const [wasDatabaseUpdated, setWasDatabaseUpdated] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const isMounted = useRef<boolean>(false);
 
-  const login = () => {
+  const login = (): void => {
     setIsLoggedIn(true);
   };
 
-  const logout = () => {
+  const logout = (): void => {
     setIsLoggedIn(false);
   };
 
-  const setCardsHandler = async () => {
-    const result = await dbGetCards(db);
+  const setCardsHandler = async (): Promise<void> => {
+    const result: CardInterface[] = await dbGetCards(db);
     setCards(result);
   };
 
@@ -48,8 +46,8 @@ export default function App() {
   //   console.log(arrayOfIds.toString());
   //   dbDeleteLostCards(db, arrayOfIds);
   // };
-  const setStreakHandler = async () => {
-    const result = await dbGetStreak(db);
+  const setStreakHandler = async (): Promise<void> => {
+    const result: StreakInterface = await dbGetStreak(db);
     if (result === undefined) {
       dbInsertStreak(db);
       const result = await dbGetStreak(db);
@@ -131,7 +129,7 @@ export default function App() {
           <View>
             <MenuBar
               screenButtonHandler={changeScreenHandler}
-              streak={streak.number}
+              streakValue={streak.value}
             />
             {renderSwitch(screen)}
           </View>

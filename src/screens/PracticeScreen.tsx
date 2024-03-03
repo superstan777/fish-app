@@ -3,16 +3,27 @@ import { Counter } from "../components/Counter";
 import { formatDate } from "../utility/formatDate";
 import { Card } from "../components/Card";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { TextToSpeechButton } from "../components/TextToSpeechButton";
+import { CardInterface } from "../Interfaces";
 
-export const PracticeScreen = ({ cards, setWasDatabaseUpdated, db }) => {
-  const [currentText, setCurrentText] = useState("current text");
+interface Props {
+  database: any;
+  cards: CardInterface[];
+  setWasDatabaseUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const cardsDoneToday = cards.filter(
+export const PracticeScreen: React.FC<Props> = ({
+  database,
+  cards,
+  setWasDatabaseUpdated,
+}) => {
+  const [currentText, setCurrentText] = useState<string>("current text");
+
+  const cardsDoneToday: CardInterface[] = cards.filter(
     (obj) => obj.lastPracticeDate === formatDate(new Date())
   );
-  const todayPracticeCards = cards.filter(
+  const todayPracticeCards: CardInterface[] = cards.filter(
     (obj) => obj.nextPracticeDate === formatDate(new Date())
   );
 
@@ -20,7 +31,7 @@ export const PracticeScreen = ({ cards, setWasDatabaseUpdated, db }) => {
     currentTextHandler();
   }, [cards]);
 
-  const currentTextHandler = () => {
+  const currentTextHandler = (): void => {
     if (todayPracticeCards.length === 0) {
       setCurrentText("no more cards");
     } else {
@@ -28,7 +39,7 @@ export const PracticeScreen = ({ cards, setWasDatabaseUpdated, db }) => {
     }
   };
 
-  const renderPracticeCards = () => {
+  const renderPracticeCards = (): React.JSX.Element | React.JSX.Element[] => {
     if (todayPracticeCards.length === 0) {
       return (
         <View>
@@ -45,10 +56,9 @@ export const PracticeScreen = ({ cards, setWasDatabaseUpdated, db }) => {
       return todayPracticeCards.map((card, index) => (
         <Card
           key={index}
-          index={index}
           cardData={card}
           setWasDatabaseUpdated={setWasDatabaseUpdated}
-          db={db}
+          database={database}
         />
       ));
     }

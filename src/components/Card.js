@@ -15,7 +15,7 @@ const { width: wWidth, height } = Dimensions.get("window");
 
 const SNAP_POINTS = [-wWidth, 0, wWidth];
 
-export const Card = ({ cardData, setWasDatabaseUpdated, db }) => {
+export const Card = ({ cardData, setWasDatabaseUpdated, database }) => {
   const offset = useSharedValue({ x: 0, y: 0 });
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);

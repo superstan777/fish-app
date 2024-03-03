@@ -3,14 +3,17 @@ import { SwitchButton } from "./SwitchButton";
 
 interface Props {
   screenButtonHandler: () => void;
-  streak: number;
+  streakValue: number;
 }
 
-export const MenuBar: React.FC<Props> = ({ screenButtonHandler, streak }) => {
+export const MenuBar: React.FC<Props> = ({
+  screenButtonHandler,
+  streakValue,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.containerItem}>
-        <Text style={styles.text}>Streak: {streak}</Text>
+        <Text style={styles.text}>Streak: {streakValue}</Text>
       </View>
       <View style={styles.containerItem}>
         <SwitchButton buttonHandler={screenButtonHandler} />

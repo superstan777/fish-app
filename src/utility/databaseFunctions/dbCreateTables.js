@@ -6,7 +6,7 @@ export const dbCreateTables = (database) => {
   });
   database.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS streak (id INTEGER, number INTEGER, lastUpdateDate DATE)"
+      "CREATE TABLE IF NOT EXISTS streak (id INTEGER, value INTEGER, lastUpdateDate DATE)"
     );
   });
 };

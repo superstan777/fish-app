@@ -1,15 +1,18 @@
 import axios from "axios";
 
-export const translateText = async (text) => {
+export const translateText = async (
+  textToTranslate: string
+): Promise<string | null> => {
   try {
     const response = await axios.post(
       `${process.env.EXPO_PUBLIC_BASE_URL}?key=${process.env.EXPO_PUBLIC_API_KEY}`,
       {
-        q: text,
+        q: textToTranslate,
         target: "en",
       }
     );
-    const translatedText = response.data.data.translations[0].translatedText;
+    const translatedText: string =
+      response.data.data.translations[0].translatedText;
     return translatedText;
   } catch (error) {
     console.error("Error translating text:", error);
